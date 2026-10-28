@@ -1,17 +1,38 @@
 pipeline {
     agent any
+
     stages {
-        stage('Build') {
-            steps { bat 'echo Building the application...' }
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
         }
+
+        stage('Install') {
+            steps {
+                bat 'npm install'
+            }
+        }
+
         stage('Test') {
-            steps { bat 'echo Running tests...' }
+            steps {
+                bat 'npm test'
+            }
         }
+
         stage('Deploy') {
-            steps { bat 'echo Deploying application...' }
+            steps {
+                bat 'echo Deployment step completed'
+            }
         }
     }
+
     post {
-        success { echo 'Pipeline completed successfully!' }
+        success {
+            echo 'Workflow completed successfully!'
+        }
+        failure {
+            echo 'Workflow failed. Check Console Output.'
+        }
     }
 }
